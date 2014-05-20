@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>无标题文档</title>
+    <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //function auto(){
+            //this.init()初始化节点对象和必备参数
+            //this.imgchange(i)图片切换函数
+            //this.buttonchange(i)切换小图标
+            //}
+            auto();
+
+        });
+
+        function auto() {
+            var imgList = $("#nav p");
+            var length = $("#nav p").length;
+            var index = 0;
+            var time = 1500;
+            var Title = $(".bot ul li");
+            var btn = $(".rig span");
+            imgList.eq(index).fadeIn();  //默认第一张显示
+            Title.text("图片索引***" + index);  //默认第一张图索引
+
+            function imgChange(i) {  //图片切换
+                imgList.eq(i).fadeIn().siblings().fadeOut();
+            }
+
+            function btnChange(i) {  //小图标
+                btn.eq(i).addClass("ac_span").siblings().removeClass("ac_span");
+            }
+
+            function title(i) {  //图片标题
+                Title.text("图片索引***" + i);
+            }
+
+            function imgScroll() {  //图片滚动
+                if (index == 5) {
+                    index = 0;
+                } else {
+                    index++;
+                }
+                title(index);
+                imgChange(index);
+                btnChange(index);
+            }
+
+            t = setInterval(imgScroll, time);
+            //鼠标浮到底部小按钮停止
+            for (var u = 0; u < length; u++) {
+
+                (function (u) {
+                    btn.eq(u).mouseover(function () {
+                        imgChange(u);
+                        title(u);
+                        btnChange(u);
+                        clearInterval(t);
+                    })
+                     .mouseout(function () {
+                                index=u;
+                                t = setInterval(imgScroll, time);
+                            });
+                })(u);
+            }
+
+            $("#nav").hover(function () {
+                var c = clearInterval(t);
+                if (!c) {
+                    $("#left,#right").mouseover(function () {
+                        clearInterval(t);
+                    });
+                }
+            }, function () {
+                t = setInterval(imgScroll, time);
+            });
+
+            $("#left").click(function () {
+                if (index == 0) {
+                    index = 5;
+                } else {
+                    index--;
+                }
+                title(index);
+                imgChange(index);
+                btnChange(index);
+            });
+
+            $("#right").click(function () {
+                if (index == 5) {
+                    index = 0;
+                } else {
+                    index++;
+                }
+                title(index);
+                imgChange(index);
+                btnChange(index);
+            });
+
+
+        }	 //auto结束
+
+
+    </script>
+</head>
+
+<body>
+
+
+<!--轮转开始-->
+<div id="imgBox">
+    <div id="nav">
+        <p><a href="#"><img src="01.jpg"/></a></p>
+
+        <p><a href="#"><img src="02.jpg"/></a></p>
+
+        <p><a href="#"><img src="03.jpg"/></a></p>
+
+        <p><a href="#"><img src="04.jpg"/></a></p>
+
+        <p><a href="#"><img src="05.jpg"/></a></p>
+
+        <p><a href="#"><img src="06.jpg"/></a></p>
+    </div>
+    <a href="#" id="left"></a>
+    <a href="#" id="right"></a>
+
+    <div class="bot">
+        <ul>
+            <li></li>
+        </ul>
+        <div class="rig">
+            <span class="ac_span"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!--轮转结束-->
+
+</body>
+</html>
